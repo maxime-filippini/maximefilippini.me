@@ -7,4 +7,3 @@ node_modules/
 priv/site
 .vscode
 testing/
-dist/
