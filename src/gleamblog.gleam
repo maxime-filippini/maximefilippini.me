@@ -6,7 +6,7 @@ import gleam/list
 import lustre/ssg
 import simplifile
 
-const out_dir = "priv/site"
+const out_dir = "dist"
 
 const assets_dir = "priv/assets"
 
