@@ -142,7 +142,7 @@ pub fn post_cover_img(filename: String) -> Element(Nil) {
 }
 
 pub fn under_construction_banner() -> Element(Nil) {
-  html.div([class("h-64 w-full bg-surface-0 flex rounded-xl p-8")], [
+  html.div([class("h-64 bg-surface-0 flex rounded-xl p-8 m-8")], [
     warning_svg(),
     html.div([class("flex flex-col justify-center w-full gap-4")], [
       h2(class: "text-3xl text-center w-full", text: "Under construction"),

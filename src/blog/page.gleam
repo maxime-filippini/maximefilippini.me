@@ -56,7 +56,7 @@ pub fn blog(nav_items: List(NavItem), posts: List(Post)) -> Element(Nil) {
   let contents = [
     components.page_title(title),
     components.under_construction_banner(),
-    // html.div([class("flex flex-col gap-4")], post_cards),
+    html.div([class("flex flex-col gap-4")], post_cards),
   ]
   make_page(nav_items:, title:, contents:)
 }
