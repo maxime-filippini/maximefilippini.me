@@ -702,6 +702,10 @@ video {
   gap: 2rem;
 }
 
+.overflow-x-scroll {
+  overflow-x: scroll;
+}
+
 .rounded-md {
   border-radius: 0.375rem;
 }
@@ -714,8 +718,17 @@ video {
   border-width: 1px;
 }
 
+.border-b-2 {
+  border-bottom-width: 2px;
+}
+
 .border-r-2 {
   border-right-width: 2px;
+}
+
+.border-surface-0 {
+  --tw-border-opacity: 1;
+  border-color: rgb(54 58 79 / var(--tw-border-opacity));
 }
 
 .bg-bg {
@@ -791,3 +804,7 @@ video {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+
+/* Hide scrollbar for IE, Edge and Firefox */
