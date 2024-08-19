@@ -31,6 +31,11 @@ jobs:
         run: gleam run
       - name: run tailwind
         run: npm run tw_build
-      - name: Deploy to Coolify
-        run: |
-          curl --request GET '${{ secrets.COOLIFY_WEBHOOK }}' --header 'Authorization: Bearer ${{ secrets.COOLIFY_TOKEN }}'
+      - name: push to site branch
+        uses: s0/git-publish-subdir-action@develop
+        env:
+          REPO: self
+          BRANCH: site
+          FOLDER: dist
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MESSAGE: "{msg}"
