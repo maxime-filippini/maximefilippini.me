@@ -5,7 +5,7 @@ import lustre/element.{type Element, element, text}
 import lustre/element/html.{a, head, li, link, meta, nav, script, ul}
 
 pub type NavItem {
-  Logo(url: String, title: String, color: String)
+  Logo(url: String, title: String, short_title: String, color: String)
   NavItem(url: String, title: String)
   Separator
 }
@@ -67,18 +67,28 @@ pub fn nav_bar(nav_items: List(NavItem)) -> Element(Nil) {
     |> list.map(fn(item) {
       case item {
         Separator -> html.div([class("w-4 border-r-2 mr-4")], [])
-        Logo(url:, title:, color:) ->
-          li([class("text-2xl text-[" <> color <> "]")], [
-            a([href(url)], [text(title)]),
+        Logo(url:, title:, short_title:, color:) ->
+          html.div([], [
+            li([class("text-2xl text-[" <> color <> "] sm:block hidden")], [
+              a([href(url)], [text(title)]),
+            ]),
+            li([class("text-2xl text-[" <> color <> "] block sm:hidden")], [
+              a([href(url)], [text(short_title)]),
+            ]),
           ])
         NavItem(url:, title:) ->
           li([class("text-lg")], [a([href(url)], [text(title)])])
       }
     })
 
-  nav([class("w-full py-4 sticky top-0 bg-bg border-b-2 border-surface-0")], [
-    ul([class("flex gap-8 justify-center")], list_items),
-  ])
+  nav(
+    [
+      class(
+        "w-full py-4 sticky top-0 bg-bg border-b-2 border-surface-0 sm:px-0 px-8",
+      ),
+    ],
+    [ul([class("flex gap-8 justify-center")], list_items)],
+  )
 }
 
 pub fn h1(text t: String, class c: String) -> Element(Nil) {
@@ -140,7 +150,7 @@ pub fn paragraph(elements: List(Element(a))) -> Element(a) {
 }
 
 pub fn page_title(title: String) -> Element(Nil) {
-  h1(text: title, class: "text-5xl mb-6 mt-6 font-bold")
+  h1(text: title, class: "sm:text-5xl text-3xl mb-6 mt-6 font-bold")
 }
 
 pub fn favicon(emoji: String) -> Element(Nil) {

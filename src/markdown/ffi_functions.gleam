@@ -10,13 +10,17 @@ pub fn code(src: String, lang: String) -> Element(msg) {
     attribute.class("not-prose language-" <> lang),
   ]
   html.pre(
-    [attribute.class("my-6 bg-surface-0 p-4 rounded-md overflow-x-scroll")],
+    [
+      attribute.class(
+        "my-6 bg-surface-0 p-4 rounded-md overflow-x-scroll text-sm sm:text-lg",
+      ),
+    ],
     [html.code(attributes, [html.text(src)])],
   )
 }
 
 pub fn h2(value: String, margin margin: Bool) -> Element(a) {
-  let base = "text-3xl font-bold"
+  let base = "sm:text-3xl text-xl font-bold"
   let cls = case margin {
     True -> base <> " my-6"
     False -> base
@@ -26,7 +30,8 @@ pub fn h2(value: String, margin margin: Bool) -> Element(a) {
 
 pub fn heading(depth: Int, content: String) -> Element(Nil) {
   case depth {
-    1 -> components.h1(content, class: "text-5xl mb-6 mt-6 font-bold")
+    1 ->
+      components.h1(content, class: "sm:text-5xl text-3xl mb-6 mt-6 font-bold")
     2 -> h2(content, margin: True)
     3 -> html.h3([], [text(content)])
     4 -> html.h4([], [text(content)])

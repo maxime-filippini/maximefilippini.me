@@ -23,7 +23,12 @@ pub fn main() {
     |> dict.from_list
 
   let nav_items = [
-    Logo(url: "/", title: "Maxime Filippini", color: "#a6d189"),
+    Logo(
+      url: "/",
+      title: "Maxime Filippini",
+      short_title: "M.F.",
+      color: "#a6d189",
+    ),
     Separator,
     NavItem(url: "/blog/index.html", title: "Blog"),
     NavItem(url: "/about.html", title: "About"),
