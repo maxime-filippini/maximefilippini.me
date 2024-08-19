@@ -1,6 +1,7 @@
 // Functions dealing with blog posts
 
 import blog/components
+import blog/dates
 import gleam/dynamic
 import gloml
 import lustre/element.{type Element}
@@ -16,7 +17,14 @@ pub type Error {
 }
 
 pub type Metadata {
-  Metadata(id: String, title: String, slug: String, abstract: String)
+  Metadata(
+    id: String,
+    title: String,
+    slug: String,
+    abstract: String,
+    tags: List(String),
+    publication_date: dates.Date,
+  )
 }
 
 // Parse the metadata of a post
@@ -24,12 +32,14 @@ pub fn parse_metadata(
   meta_string: String,
 ) -> Result(Metadata, gloml.DecodeError) {
   let decoder =
-    dynamic.decode4(
+    dynamic.decode6(
       Metadata,
       dynamic.field("id", dynamic.string),
       dynamic.field("title", dynamic.string),
       dynamic.field("slug", dynamic.string),
       dynamic.field("abstract", dynamic.string),
+      dynamic.field("tags", dynamic.list(of: dynamic.string)),
+      dynamic.field("publication_date", dates.decoder),
     )
 
   gloml.decode(meta_string, decoder)
@@ -41,6 +51,7 @@ pub fn to_abstract_card(post: Post) -> Element(Nil) {
     abstract: post.meta.abstract,
     id: post.meta.slug,
     title: post.meta.title,
+    tags: post.meta.tags,
   )
 }
 

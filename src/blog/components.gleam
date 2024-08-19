@@ -1,7 +1,8 @@
+import gleam/io
 import gleam/list
-import lustre/attribute.{type Attribute, attribute, class, href, name, rel}
+import lustre/attribute.{type Attribute, attribute, class, href, name, rel, src}
 import lustre/element.{type Element, element, text}
-import lustre/element/html.{a, head, li, link, meta, nav, ul}
+import lustre/element/html.{a, head, li, link, meta, nav, script, ul}
 
 pub type NavItem {
   Logo(url: String, title: String, color: String)
@@ -15,15 +16,23 @@ pub type NavBar {
 
 const stylesheet_path = "/stylesheets/styles.css"
 
+const hljs_script_url = "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"
+
+const hljs_python_script_url = "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/languages/python.min.js"
+
 pub fn page_head(title t: String) {
   head([], [
     charset("utf-8"),
     viewport([
       content("width=device-width, initial-scale=1.0, viewport-fit=cover"),
     ]),
+    link([rel("stylesheet"), href("/stylesheets/hljs.css")]),
     link([rel("stylesheet"), href(stylesheet_path)]),
     title(t),
     favicon("🖥"),
+    script([src(hljs_script_url)], ""),
+    script([src(hljs_python_script_url)], ""),
+    script([], "hljs.highlightAll();"),
     ..font()
   ])
 }
@@ -49,7 +58,7 @@ fn viewport(attributes: List(Attribute(a))) -> Element(a) {
 }
 
 pub fn container(elements: List(Element(Nil))) -> Element(Nil) {
-  html.div([class("container max-w-3xl mx-auto mt-8 flex flex-col")], elements)
+  html.div([class("container max-w-3xl mx-auto flex flex-col")], elements)
 }
 
 pub fn nav_bar(nav_items: List(NavItem)) -> Element(Nil) {
@@ -84,7 +93,18 @@ pub fn article_card(
   id id: String,
   title title: String,
   abstract abstract: String,
+  tags tags: List(String),
 ) -> Element(Nil) {
+  let tag_pills = html.div([class("flex gap-2")], tags |> list.map(tag_pill))
+  let tag_div = case tags {
+    [] -> html.div([], [])
+    _ ->
+      html.div([class("flex h-8 align-center")], [
+        html.p([class("w-16")], [text("Tags")]),
+        tag_pills,
+      ])
+  }
+
   html.a([attribute.href("/blog/" <> id <> ".html")], [
     html.div(
       [
@@ -93,7 +113,11 @@ pub fn article_card(
           "border border-width-1 rounded-md flex flex-col gap-2 p-4 bg-surface-0",
         ),
       ],
-      [h2(title, class: "text-2xl text-bold"), html.p([], [text(abstract)])],
+      [
+        h2(title, class: "text-2xl text-bold"),
+        tag_div,
+        html.p([], [text(abstract)]),
+      ],
     ),
   ])
 }
@@ -170,11 +194,17 @@ pub fn warning_svg() -> Element(Nil) {
           attribute("stroke-linejoin", "round"),
           attribute(
             "d",
-            "M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z",
+            "M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 "
+              <> "0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 "
+              <> "0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z",
           ),
         ],
         [],
       ),
     ],
   )
+}
+
+pub fn tag_pill(tag: String) -> Element(Nil) {
+  html.div([class("bg-catp-green text-bg rounded-full px-4 py-1")], [text(tag)])
 }

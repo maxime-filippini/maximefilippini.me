@@ -51,11 +51,10 @@ pub fn post(nav_items: List(NavItem)) -> fn(Post) -> Element(Nil) {
 
 // The blog index
 pub fn blog(nav_items: List(NavItem), posts: List(Post)) -> Element(Nil) {
-  let title = "My blog"
+  let title = "Blog"
   let post_cards = posts |> list.map(post.to_abstract_card)
   let contents = [
     components.page_title(title),
-    components.under_construction_banner(),
     html.div([class("flex flex-col gap-4")], post_cards),
   ]
   make_page(nav_items:, title:, contents:)

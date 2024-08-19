@@ -3,6 +3,8 @@ id = "embracing-the-minibuilder-mindset"
 title = "🧑‍💻 Embracing the Minibuilder mindset"
 slug = "embracing-the-minibuilder-mindset"
 abstract = "TBD"
+tags = ["hi", "hello"]
+publication_date = "2024-01-01"
 ---
 
 Hi there 👋,
