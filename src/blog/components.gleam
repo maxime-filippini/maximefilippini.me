@@ -67,7 +67,7 @@ pub fn nav_bar(nav_items: List(NavItem)) -> Element(Nil) {
       }
     })
 
-  nav([class("w-full py-4 sticky top-0 bg-bg")], [
+  nav([class("w-full py-4 sticky top-0 bg-bg border-b-2 border-surface-0")], [
     ul([class("flex gap-8 justify-center")], list_items),
   ])
 }

@@ -9,9 +9,10 @@ pub fn code(src: String, lang: String) -> Element(msg) {
     attribute("data-lang", lang),
     attribute.class("not-prose language-" <> lang),
   ]
-  html.pre([attribute.class("my-6 bg-surface-0 p-4 rounded-md")], [
-    html.code(attributes, [html.text(src)]),
-  ])
+  html.pre(
+    [attribute.class("my-6 bg-surface-0 p-4 rounded-md overflow-x-scroll")],
+    [html.code(attributes, [html.text(src)])],
+  )
 }
 
 pub fn h2(value: String, margin margin: Bool) -> Element(a) {
