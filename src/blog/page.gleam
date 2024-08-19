@@ -29,7 +29,10 @@ pub fn make_page(
 
 pub fn index(nav_items: List(NavItem)) -> Element(Nil) {
   let title = "Maxime Filippini"
-  let contents = [components.page_title(title)]
+  let contents = [
+    components.page_title(title),
+    components.under_construction_banner(),
+  ]
 
   make_page(nav_items:, title:, contents:)
 }
@@ -40,7 +43,6 @@ pub fn post(nav_items: List(NavItem)) -> fn(Post) -> Element(Nil) {
     let title = post.meta.title
     let contents = [
       components.page_title(title),
-      // components.post_cover_img("/images/chartguy.png"),
       html.div([class("text-lg")], post.body),
     ]
     make_page(nav_items:, title:, contents:)
@@ -53,7 +55,8 @@ pub fn blog(nav_items: List(NavItem), posts: List(Post)) -> Element(Nil) {
   let post_cards = posts |> list.map(post.to_abstract_card)
   let contents = [
     components.page_title(title),
-    html.div([class("flex flex-col gap-4")], post_cards),
+    components.under_construction_banner(),
+    // html.div([class("flex flex-col gap-4")], post_cards),
   ]
   make_page(nav_items:, title:, contents:)
 }
@@ -61,8 +64,9 @@ pub fn blog(nav_items: List(NavItem), posts: List(Post)) -> Element(Nil) {
 // The about page
 pub fn about(nav_items: List(NavItem)) -> Element(Nil) {
   let title = "About me"
-  let contents = [components.page_title(title)]
+  let contents = [
+    components.page_title(title),
+    components.under_construction_banner(),
+  ]
   make_page(nav_items:, title:, contents:)
 }
-// My CV page
-// ...

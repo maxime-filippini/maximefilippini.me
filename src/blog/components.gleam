@@ -1,6 +1,6 @@
 import gleam/list
 import lustre/attribute.{type Attribute, attribute, class, href, name, rel}
-import lustre/element.{type Element, text}
+import lustre/element.{type Element, element, text}
 import lustre/element/html.{a, head, li, link, meta, nav, ul}
 
 pub type NavItem {
@@ -139,4 +139,42 @@ pub fn post_cover_img(filename: String) -> Element(Nil) {
     attribute.src(filename),
     class("h-[300px] w-full object-cover my-4 rounded-lg"),
   ])
+}
+
+pub fn under_construction_banner() -> Element(Nil) {
+  html.div([class("h-64 w-full bg-surface-0 flex rounded-xl p-8")], [
+    warning_svg(),
+    html.div([class("flex flex-col justify-center w-full gap-4")], [
+      h2(class: "text-3xl text-center w-full", text: "Under construction"),
+      html.p([class("text-xl italic text-center w-full")], [
+        text("Please be patient."),
+      ]),
+    ]),
+  ])
+}
+
+pub fn warning_svg() -> Element(Nil) {
+  html.svg(
+    [
+      attribute("fill", "none"),
+      attribute("viewBox", "0 0 24 24"),
+      attribute("stroke-width", "1.5"),
+      attribute("stroke", "currentColor"),
+      class("m-4"),
+    ],
+    [
+      element(
+        "path",
+        [
+          attribute("stroke-linecap", "round"),
+          attribute("stroke-linejoin", "round"),
+          attribute(
+            "d",
+            "M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z",
+          ),
+        ],
+        [],
+      ),
+    ],
+  )
 }
