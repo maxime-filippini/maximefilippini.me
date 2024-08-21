@@ -1,0 +1,108 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"><link rel="stylesheet" href="/stylesheets/hljs.css"><link rel="stylesheet" href="/stylesheets/styles.css"><title>💫 A Journey to the Stars</title><link rel="icon" href="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text y=%22.9em%22 font-size=%2290%22&gt;🖥&lt;/text&gt;&lt;/svg&gt;"><script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/languages/python.min.js"></script><script type="text/javascript" src="/js/highlightjs.gleam.js"></script><script>hljs.highlightAll();</script><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&amp;display=swap"></head><body class="bg-bg text-white font-roboto"><div class="container max-w-3xl mx-auto flex flex-col"><nav class="w-full py-4 sticky top-0 bg-bg border-b-2 border-surface-0 sm:px-0 px-8"><ul class="flex gap-8 justify-center"><div><li class="text-2xl text-[#a6d189] sm:block hidden"><a href="/">Maxime Filippini</a></li><li class="text-2xl text-[#a6d189] block sm:hidden"><a href="/">M.F.</a></li></div><div class="w-4 border-r-2 mr-4"></div><li class="text-lg"><a href="/blog/index.html">Blog</a></li><li class="text-lg"><a href="/about.html">About</a></li></ul></nav><div class="p-4"><h1 class="sm:text-5xl text-3xl mb-6 mt-6 font-bold">💫 A Journey to the Stars</h1><div class="flex h-8 align-center"><p class="w-16 flex items-center">Tags</p><div class="flex gap-2"><div class="text-bg rounded-full px-4 py-1 bg-gleam-pink">Gleam</div></div></div><p class="mt-4 italic">Estimated read time: 3 minutes</p><article class="text-lg mt-8"><pre class="my-6 bg-surface-0 p-4 rounded-md overflow-x-scroll text-sm sm:text-lg"><code data-lang="//js(null)" class="not-prose language-null">- intro to gleam
+- sum types
+- pattern matching, no loops, no ifs
+- steps in writing a static site in gleam
+- coolify
+
+Intro :
+
+- Writing code should be fun. Gleam look fun.
+</code></pre><p class="my-3 align-middle">After working with Python for years, I wanted to diversify a little bit and
+explore something else, something different, refreshing. For a while, I thought
+about spending some time with <a href="https://go.dev/" class="underline font-bold underline-offset-2 hover:text-gleam-pink hover:underline-offset-4 duration-200">Go</a>, which is an excellent
+language from writing back-end servers, thanks to its overall simplicity and
+amazing concurrency model. But in March of this year, an exciting new language
+released in its 1.0 version: 💫 <a href="https://gleam.run/news/gleam-version-1/" class="underline font-bold underline-offset-2 hover:text-gleam-pink hover:underline-offset-4 duration-200">Gleam</a>
+💫.</p><p class="my-3 align-middle">Gleam is, like Go, a simple language, as one of its main objective was to avoid
+&quot;magic&quot; and generally provide one way of doing things. This is a great goal,
+which inherently makes Gleam a polar opposite of Python!</p><p class="my-3 align-middle">Another way that Gleam differs systematically from Python, is that it is
+<strong>statically typed</strong>, with a wonderful type system to boot. This means that, in
+general, if a program compiles, then it will run, and runtime errors will be much
+rarer when compared to an equivalent program written in Python or Javascript.</p><p class="my-3 align-middle">But where Gleam shines above all for me, can be summarized in one word:</p><blockquote class="bg-surface-0 border-l-[16px] border-gleam-pink py-4 my-4 pl-4 rounded-lg"><p class="my-3 align-middle"><strong>🌈 Aesthetics</strong>.</p></blockquote><p class="my-3 align-middle">First, look at their website:</p><p class="my-3 align-middle"><img src="/images/gleam_website_banner.png" alt class="rounded-lg"></p><p class="my-3 align-middle">If you&#39;re not convinced, let&#39;s take a look at the gorgeous code. Don&#39;t worry
+if it looks foreign, it&#39;s mostly due to the <em>functional style</em> of the language, and
+we will go over these features in the next sections and future posts.</p><pre class="my-6 bg-surface-0 p-4 rounded-md overflow-x-scroll text-sm sm:text-lg"><code data-lang="gleam" class="not-prose language-gleam">fn run(
+  directories: Dict(String, List(String)),
+  connection: postgres.ConnectionOptions,
+) -&gt; Dict(String, #(Int, List(Error))) {
+  use directory, files &lt;- dict.map_values(directories)
+
+  let #(queries, errors) =
+    list.map(files, query.from_file)
+    |&gt; result.partition
+
+  let #(queries, errors) = case postgres.main(queries, connection) {
+    Error(error) -&gt; #([], [error, ..errors])
+    Ok(#(queries, type_errors)) -&gt; #(queries, list.append(errors, type_errors))
+  }
+
+  let output_file =
+    filepath.directory_name(directory)
+    |&gt; filepath.join(&quot;sql.gleam&quot;)
+
+  case write_queries(queries, to: output_file) {
+    Ok(n) -&gt; #(n, errors)
+    Error(error) -&gt; #(list.length(queries), [error, ..errors])
+  }
+}</code></pre><h2 class="sm:text-3xl text-xl font-bold my-6">A quick Gleam overview</h2><p class="my-3 align-middle">Because it is a functional programming language, writing Gleam is quite
+different from writing in other languages, such as Python, as it has (almost)
+<strong>none of the usual control flow mechanisms</strong> (e.g. loops and conditionals).
+What Gleam has, however, is:</p><ul class="list-disc list-outside ml-4"><li><p class="my-3 align-middle"><strong>Recursion</strong> (which is our go-to mechanism to replace iteration); and</p></li><li><p class="my-3 align-middle"><strong>Pattern matching</strong>.</p></li></ul><p class="my-3 align-middle">Consider the following simple Python program:</p><pre class="my-6 bg-surface-0 p-4 rounded-md overflow-x-scroll text-sm sm:text-lg"><code data-lang="python" class="not-prose language-python">def integers_above_n(lst: list[int], n: float) -&gt; list[int]:
+    return [
+        item
+        for item in lst
+        if item &gt; n
+    ]</code></pre><p class="my-3 align-middle">In Gleam, a naive implementation of this function would look like:</p><pre class="my-6 bg-surface-0 p-4 rounded-md overflow-x-scroll text-sm sm:text-lg"><code data-lang="gleam" class="not-prose language-gleam">import gleam/int
+
+fn integers_above_n(lst: List(Int), n: Float) -&gt; List(Int) {
+  case lst {
+    [] -&gt; lst
+    [first, ..rest] -&gt; {
+      case int.to_float(first) &gt;. n {
+        True -&gt; [first, ..integers_above_n(rest, n)]
+        False -&gt; integers_above_n(rest, n)
+      }
+    }
+  }
+}</code></pre><p class="my-3 align-middle">Let&#39;s break down what the function does, although it is probably quite clear:</p><ul class="list-disc list-outside ml-4"><li><p class="my-3 align-middle">Gleam doesn&#39;t have a <code>return</code> statement. Instead, it uses <strong>implicit returns</strong>
+, and the last line of a block is what is going to be returned out of the block.
+As such, the result of the <code>case</code> statement is the return value of our function.</p></li><li><p class="my-3 align-middle">The <code>case</code> statement does a pattern match on our list <code>list</code>.</p><ul class="list-disc list-outside ml-4"><li><p class="my-3 align-middle"><code>[] -&gt; lst</code> means that if the list is empty, we return the list itself (i.e. we are done iterating);</p></li><li><p class="my-3 align-middle">If the list is not empty, the the list can be written as
+<code>[first, ..rest]</code>, i.e. <code>first</code> is the name we attach to the first element
+of the list, and the rest of the list is labelled <code>rest</code>. We write it as <code>..rest</code> because <code>rest</code> is itself a list. This would be the equivalent of
+writing <code>*rest</code> in Python.</p><p class="my-3 align-middle">In this case, we need to consider two cases for the value of <code>first</code>.</p><ul class="list-disc list-outside ml-4"><li><p class="my-3 align-middle">If it is above <code>n</code>, we add it to our output;</p></li><li><p class="my-3 align-middle">Otherwise, we skip it.</p></li></ul><p class="my-3 align-middle">Of course, because Gleam makes us write <strong>type-safe</strong> programs, we cannot
+directly compare integers and floating numbers, so we have to make a conversion
+before the comparison (and note the dedicated comparison operators for floating
+numbers <code>&gt;.</code> to make everything explicit.)</p></li></ul></li></ul><p class="my-3 align-middle">This example represents well the type of control flows you can expect from Gleam
+programs. Even though I find it quite easy to read, one could argue that it is
+a little bit verbose, and that Python&#39;s list comprehension reads a little bit
+nicer.</p><p class="my-3 align-middle">Fret not, because there is a much more idiomatic way to write this function:</p><pre class="my-6 bg-surface-0 p-4 rounded-md overflow-x-scroll text-sm sm:text-lg"><code data-lang="gleam" class="not-prose language-gleam">import gleam/list
+
+fn integers_above_n(lst: List(Int), n: Float) -&gt; List(Int) {
+  list.filter(lst, fn(x) { int.to_float(x) &gt;. n })
+}</code></pre><p class="my-3 align-middle">This code performs the filtering of the list, using an <strong>anonymous function</strong> as
+a way to decide which elements should be retained (in our case, the values that
+are greater than <code>n</code>.)</p><p class="my-3 align-middle">Now let us imagine we wanted to return <strong>the square</strong> of all the values above 5.
+We could use the <code>list.map</code> function, which applies a function to each element
+of a list, which then would give:</p><pre class="my-6 bg-surface-0 p-4 rounded-md overflow-x-scroll text-sm sm:text-lg"><code data-lang="gleam" class="not-prose language-gleam">import gleam/list
+
+fn square_of_integers_above_n(lst: List(Int), n: Float) -&gt; List(Int) {
+  list.map(list.filter(lst, fn(x) { int.to_float(x) &gt;. n }), fn(x) { x * x })
+}
+</code></pre><p class="my-3 align-middle">Now this is quite difficult to read, especially when compared to its Python
+equivalent, i.e.</p><pre class="my-6 bg-surface-0 p-4 rounded-md overflow-x-scroll text-sm sm:text-lg"><code data-lang="python" class="not-prose language-python">def square_of_integers_above_n(lst: list[int], n: float) -&gt; list[int]:
+    return [
+        item * item
+        for item in lst
+        if item &gt; n
+    ]</code></pre><p class="my-3 align-middle">Because Gleam is built upon functions, it gives us some syntactic sugar to help
+us write chains of functions. In our case above, what we want to do is provide
+the <code>list.map</code> function with the result of the <code>list.filter</code> function. This can
+be done using the <strong>pipe</strong> operator <code>|&gt;</code>:</p><pre class="my-6 bg-surface-0 p-4 rounded-md overflow-x-scroll text-sm sm:text-lg"><code data-lang="gleam" class="not-prose language-gleam">import gleam/list
+
+fn square_of_integers_above_n(lst: List(Int), n: Float) -&gt; List(Int) {
+  lst
+  |&gt; list.filter(fn(x) { int.to_float(x) &gt;. n })
+  |&gt; list.map(fn(x) { x * x })
+}</code></pre><p class="my-3 align-middle">The pipe operator essentially works by using the value on the left as the
+<strong>first argument</strong> in the function on the right. The Gleam syntax is great
+because it allows us to specify the other arguments of that function.</p></article></div></div></body></html>
