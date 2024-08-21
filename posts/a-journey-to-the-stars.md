@@ -5,7 +5,7 @@ title = "💫 A Journey to the Stars"
 abstract = ""
 tags = ["Gleam"]
 publication_date = "2024-08-22"
-draft = true
+draft = false
 ---
 
 ```
@@ -14,34 +14,70 @@ draft = true
 - pattern matching, no loops, no ifs
 - steps in writing a static site in gleam
 - coolify
+
+Intro :
+
+- Writing code should be fun. Gleam look fun.
+
 ```
 
-In programming as with everything, we ought to try to make an effort to "_choose
-the best tool for the job_", from our development environment to our programming
-language. However, for most applications, the notion of what would constitute
-an appropriate programming language for a given task has grown to encompass
-more aspects than simply **performance**, e.g.
+After working with Python for years, I wanted to diversify a little bit and
+explore something else, something different, refreshing. For a while, I thought
+about spending some time with [Go](https://go.dev/), which is an excellent
+language from writing back-end servers, thanks to its overall simplicity and
+amazing concurrency model. But in March of this year, an exciting new language
+released in its 1.0 version: 💫 [Gleam](https://gleam.run/news/gleam-version-1/)
+💫.
 
-- Ease of development and prototyping ("_developer experience_");
-- Familiarity of the developers with the language;
-- Standard library and third-party ecosystem;
-- Runtime robustness.
+Gleam is, like Go, a simple language, as one of its main objective was to avoid
+"magic" and generally provide one way of doing things. This is a great goal,
+which inherently makes Gleam a polar opposite of Python!
 
-**Python** is a prime example of a language whose performance can leave to be
-desired, but thanks to simple syntax, sprawling third-party libraries and access
-to higher performance via interoperability with C, has become the language of
-choice for many professionals.
+Another way that Gleam differs systematically from Python, is that it is
+**statically typed**, with a wonderful type system to boot. This means that, in
+general, if a program compiles, then it will run, and runtime errors will be much
+rarer when compared to an equivalent program written in Python or Javascript.
 
-Although I tend to speak and write about Python primarily, as it is the language
-I use the most, this post is about a new and exciting language called **Gleam**,
-<span class="text-3xl">test</span>
+But where Gleam shines above all for me, can be summarized in one word:
 
-## What is Gleam?
+> **🌈 Aesthetics**.
 
-Gleam is a **statically typed**, **functional** programming language that
-strives to be both **simple** and **friendly**. Its inherent simplicity comes
-from the fact that Gleam's syntax has a very small surface area, with only a few
-keywords.
+First, look at their website:
+
+![](/images/gleam_website_banner.png)
+
+If you're not convinced, let's take a look at the gorgeous code. Don't worry
+if it looks foreign, it's mostly due to the _functional style_ of the language, and
+we will go over these features in the next sections and future posts.
+
+```gleam
+fn run(
+  directories: Dict(String, List(String)),
+  connection: postgres.ConnectionOptions,
+) -> Dict(String, #(Int, List(Error))) {
+  use directory, files <- dict.map_values(directories)
+
+  let #(queries, errors) =
+    list.map(files, query.from_file)
+    |> result.partition
+
+  let #(queries, errors) = case postgres.main(queries, connection) {
+    Error(error) -> #([], [error, ..errors])
+    Ok(#(queries, type_errors)) -> #(queries, list.append(errors, type_errors))
+  }
+
+  let output_file =
+    filepath.directory_name(directory)
+    |> filepath.join("sql.gleam")
+
+  case write_queries(queries, to: output_file) {
+    Ok(n) -> #(n, errors)
+    Error(error) -> #(list.length(queries), [error, ..errors])
+  }
+}
+```
+
+## A quick Gleam overview
 
 Because it is a functional programming language, writing Gleam is quite
 different from writing in other languages, such as Python, as it has (almost)

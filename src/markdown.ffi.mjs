@@ -35,6 +35,8 @@ export function parseMarkdown(contents) {
     switch (node.type) {
       case "code":
         return Markdown.code(node.value, node.lang);
+      case "image":
+        return Markdown.image(node.url, node.alt);
       case "emphasis":
         return Markdown.emphasis(
           fold_into_list(node.children, to_lustre_element)

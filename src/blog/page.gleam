@@ -3,7 +3,6 @@
 import blog/components.{type NavItem, nav_bar, page_head}
 import blog/post.{type Post}
 import gleam/int
-import gleam/io
 import gleam/list
 import lustre/attribute.{class}
 import lustre/element.{type Element}
@@ -48,11 +47,20 @@ pub fn index(nav_items: List(NavItem)) -> Element(Nil) {
   make_page(nav_items:, title:, contents:)
 }
 
+pub fn not_found() -> Element(Nil) {
+  let contents = [html.text("Nothing to see here!")]
+
+  html([], [
+    body([class("bg-bg text-white font-roboto")], [
+      components.container([html.div([class("p-4")], contents)]),
+    ]),
+  ])
+}
+
 // A blog post
 pub fn post(nav_items: List(NavItem)) -> fn(Post) -> Element(Nil) {
   fn(post: Post) -> Element(Nil) {
     let title = post.meta.title
-    io.debug("trying " <> title)
     let contents = [
       components.page_title(title),
       components.tag_menu(post.meta.tags),
@@ -62,7 +70,6 @@ pub fn post(nav_items: List(NavItem)) -> fn(Post) -> Element(Nil) {
       html.article([class("text-lg mt-8")], post.body),
     ]
     let page = make_page(nav_items:, title:, contents:)
-    io.debug("ok " <> title)
     page
   }
 }

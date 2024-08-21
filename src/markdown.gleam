@@ -30,7 +30,6 @@ pub fn parse(
 ) -> Result(#(String, List(Element(a)), Int), MetadataError) {
   use #(meta, contents) <- result.try(extract_metadata(contents))
   let #(parsed, count) = parse_body(contents)
-  io.println("Word count: " <> int.to_string(count))
   Ok(#(meta, parsed, count))
 }
 

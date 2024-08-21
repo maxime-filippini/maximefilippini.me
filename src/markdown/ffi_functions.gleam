@@ -74,8 +74,23 @@ pub fn link(
   url: String,
   content: #(List(Element(msg)), Int),
 ) -> #(Element(msg), Int) {
-  let elt = html.a([attribute.href(url)], content.0)
+  let elt =
+    html.a(
+      [
+        attribute.href(url),
+        class(
+          "underline font-bold underline-offset-2 hover:text-gleam-pink hover:underline-offset-4 duration-200",
+        ),
+      ],
+      content.0,
+    )
   #(elt, content.1)
+}
+
+pub fn image(url: String, alt: String) -> #(Element(Nil), Int) {
+  let elt =
+    html.img([class("rounded-lg"), attribute.src(url), attribute.alt(alt)])
+  #(elt, 0)
 }
 
 pub fn list(
@@ -111,7 +126,15 @@ pub fn text(content: String) -> #(Element(msg), Int) {
 }
 
 pub fn blockquote(content: #(List(Element(msg)), Int)) -> #(Element(msg), Int) {
-  let elt = html.blockquote([], content.0)
+  let elt =
+    html.blockquote(
+      [
+        class(
+          "bg-surface-0 border-l-[16px] border-gleam-pink py-4 my-4 pl-4 rounded-lg",
+        ),
+      ],
+      content.0,
+    )
   #(elt, content.1)
 }
 

@@ -153,7 +153,7 @@ fn font() -> List(Element(Nil)) {
 }
 
 pub fn paragraph(elements: List(Element(a))) -> Element(a) {
-  html.p([class("mb-3")], elements)
+  html.p([class("my-3 align-middle")], elements)
 }
 
 pub fn page_title(title: String) -> Element(Nil) {

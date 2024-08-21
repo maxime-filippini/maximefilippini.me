@@ -38,6 +38,7 @@ pub fn main() {
   ssg.new(out_dir)
   |> ssg.add_static_route("/", page.index(nav_items))
   |> ssg.add_static_route("/about", page.about(nav_items))
+  |> ssg.add_static_route("/404", page.not_found())
   |> ssg.add_static_route("/blog/index", page.blog(nav_items, all_posts))
   |> ssg.add_dynamic_route("/blog", posts_with_slugs, page.post(nav_items))
   |> ssg.add_static_dir(assets_dir)
