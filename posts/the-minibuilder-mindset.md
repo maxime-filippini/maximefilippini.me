@@ -2,9 +2,10 @@
 id = "embracing-the-minibuilder-mindset"
 title = "🧑‍💻 Embracing the Minibuilder mindset"
 slug = "embracing-the-minibuilder-mindset"
-abstract = "TBD"
-tags = ["hi", "hello"]
+abstract = "Software is a tool that helps us build other tools. The Minibuilder mindset is an essential part of building software pragmatically. Here is what it is all about."
+tags = ["Software"]
 publication_date = "2024-01-01"
+draft = false
 ---
 
 Hi there 👋,

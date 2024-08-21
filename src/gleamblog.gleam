@@ -15,7 +15,9 @@ pub type Error {
 }
 
 pub fn main() {
-  let all_posts = parse_posts("posts")
+  let all_posts =
+    parse_posts("posts")
+    |> list.filter(fn(post) { !post.meta.draft })
 
   let posts_with_slugs =
     all_posts
@@ -33,7 +35,6 @@ pub fn main() {
     NavItem(url: "/blog/index.html", title: "Blog"),
     NavItem(url: "/about.html", title: "About"),
   ]
-
   ssg.new(out_dir)
   |> ssg.add_static_route("/", page.index(nav_items))
   |> ssg.add_static_route("/about", page.about(nav_items))

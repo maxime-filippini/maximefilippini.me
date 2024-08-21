@@ -1,3 +1,5 @@
+import gleam/int
+import gleam/io
 import gleam/result
 import gleam/string
 import lustre/element.{type Element}
@@ -25,13 +27,14 @@ pub fn extract_metadata(
 
 pub fn parse(
   contents: String,
-) -> Result(#(String, List(Element(a))), MetadataError) {
+) -> Result(#(String, List(Element(a)), Int), MetadataError) {
   use #(meta, contents) <- result.try(extract_metadata(contents))
-  let parsed = parse_body(contents)
-  Ok(#(meta, parsed))
+  let #(parsed, count) = parse_body(contents)
+  io.println("Word count: " <> int.to_string(count))
+  Ok(#(meta, parsed, count))
 }
 
 @external(javascript, "./markdown.ffi.mjs", "parseMarkdown")
-fn parse_body(content: String) -> List(Element(a)) {
+fn parse_body(content: String) -> #(List(Element(a)), Int) {
   todo
 }

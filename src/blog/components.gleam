@@ -1,6 +1,8 @@
-import gleam/io
 import gleam/list
-import lustre/attribute.{type Attribute, attribute, class, href, name, rel, src}
+import gleam/string
+import lustre/attribute.{
+  type Attribute, attribute, class, href, name, rel, src, type_,
+}
 import lustre/element.{type Element, element, text}
 import lustre/element/html.{a, head, li, link, meta, nav, script, ul}
 
@@ -20,6 +22,8 @@ const hljs_script_url = "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.
 
 const hljs_python_script_url = "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/languages/python.min.js"
 
+const hljs_gleam_path = "/js/highlightjs.gleam.js"
+
 pub fn page_head(title t: String) {
   head([], [
     charset("utf-8"),
@@ -32,6 +36,7 @@ pub fn page_head(title t: String) {
     favicon("🖥"),
     script([src(hljs_script_url)], ""),
     script([src(hljs_python_script_url)], ""),
+    script([type_("text/javascript"), src(hljs_gleam_path)], ""),
     script([], "hljs.highlightAll();"),
     ..font()
   ])
@@ -99,34 +104,36 @@ pub fn h2(text t: String, class c: String) -> Element(Nil) {
   html.h2([class(c)], [text(t)])
 }
 
+pub fn tag_menu(tags: List(String)) -> Element(Nil) {
+  let tag_pills = html.div([class("flex gap-2")], tags |> list.map(tag_pill))
+  case tags {
+    [] -> html.div([], [])
+    _ ->
+      html.div([class("flex h-8 align-center")], [
+        html.p([class("w-16 flex items-center")], [text("Tags")]),
+        tag_pills,
+      ])
+  }
+}
+
 pub fn article_card(
   id id: String,
   title title: String,
   abstract abstract: String,
   tags tags: List(String),
 ) -> Element(Nil) {
-  let tag_pills = html.div([class("flex gap-2")], tags |> list.map(tag_pill))
-  let tag_div = case tags {
-    [] -> html.div([], [])
-    _ ->
-      html.div([class("flex h-8 align-center")], [
-        html.p([class("w-16")], [text("Tags")]),
-        tag_pills,
-      ])
-  }
-
   html.a([attribute.href("/blog/" <> id <> ".html")], [
     html.div(
       [
         attribute.id(id),
         class(
-          "border border-width-1 rounded-md flex flex-col gap-2 p-4 bg-surface-0",
+          "shadow-md rounded-lg flex flex-col gap-2 p-4 bg-surface-1 hover:bg-surface-0 hover:shadow-xl duration-200",
         ),
       ],
       [
         h2(title, class: "text-2xl text-bold"),
-        tag_div,
-        html.p([], [text(abstract)]),
+        tag_menu(tags),
+        html.p([class("italic")], [text(abstract)]),
       ],
     ),
   ])
@@ -176,15 +183,18 @@ pub fn post_cover_img(filename: String) -> Element(Nil) {
 }
 
 pub fn under_construction_banner() -> Element(Nil) {
-  html.div([class("h-64 bg-surface-0 flex rounded-xl p-8 m-8")], [
-    warning_svg(),
-    html.div([class("flex flex-col justify-center w-full gap-4")], [
-      h2(class: "text-3xl text-center w-full", text: "Under construction"),
-      html.p([class("text-xl italic text-center w-full")], [
-        text("Please be patient."),
+  html.div(
+    [class("h-64 bg-surface-0 flex sm:flex-row flex-col rounded-xl p-8 m-8")],
+    [
+      warning_svg(),
+      html.div([class("flex flex-col justify-center w-full gap-4")], [
+        h2(class: "text-3xl text-center w-full", text: "Under construction"),
+        html.p([class("text-xl italic text-center w-full")], [
+          text("Please be patient."),
+        ]),
       ]),
-    ]),
-  ])
+    ],
+  )
 }
 
 pub fn warning_svg() -> Element(Nil) {
@@ -216,5 +226,9 @@ pub fn warning_svg() -> Element(Nil) {
 }
 
 pub fn tag_pill(tag: String) -> Element(Nil) {
-  html.div([class("bg-catp-green text-bg rounded-full px-4 py-1")], [text(tag)])
+  let color = case string.lowercase(tag) {
+    "gleam" -> "bg-gleam-pink"
+    _ -> "bg-catp-green"
+  }
+  html.div([class("text-bg rounded-full px-4 py-1 " <> color)], [text(tag)])
 }

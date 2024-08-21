@@ -4,16 +4,29 @@ import * as Markdown from "./markdown/ffi_functions.mjs";
 
 const empty = new Empty();
 
+// arr is an array of nodes
+// we convert each node into an array [nodes, count]
+
 const fold_into_list = (arr, f) =>
-  arr.reduceRight((acc, val) => {
-    let evaled = f(val);
+  // arr: [node, ...]
+  // f: func(node) -> Element
+  // val: node
+  // acc: [[node, ...], count)
 
-    if (evaled === undefined) {
-      return acc;
-    }
+  // the arr is a list of either lists or single elements
+  // the function passed to reduce can handle both
+  arr.reduceRight(
+    (acc, val) => {
+      let [elt, count] = f(val); // [[Element], int]
 
-    return new NonEmpty(evaled, acc);
-  }, empty);
+      if (elt === undefined) {
+        return acc;
+      }
+
+      return [new NonEmpty(elt, acc[0]), acc[1] + count];
+    },
+    [empty, 0]
+  );
 
 export function parseMarkdown(contents) {
   const ast = fromMarkdown(contents);
@@ -61,7 +74,7 @@ export function parseMarkdown(contents) {
       case "heading":
         return Markdown.heading(node.depth, node.children[0].value);
       default:
-        return undefined; // skip
+        return [undefined, 0]; // skip
     }
   });
 }

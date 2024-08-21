@@ -2,6 +2,8 @@
 
 import blog/components.{type NavItem, nav_bar, page_head}
 import blog/post.{type Post}
+import gleam/int
+import gleam/io
 import gleam/list
 import lustre/attribute.{class}
 import lustre/element.{type Element}
@@ -9,6 +11,15 @@ import lustre/element/html.{body, html}
 
 pub type Page {
   Page
+}
+
+fn minutes_to_read(word_count: Int) -> String {
+  let min = word_count / 200
+
+  case min {
+    1 -> "1 minute"
+    min -> int.to_string(min) <> " minutes"
+  }
 }
 
 pub fn make_page(
@@ -41,11 +52,18 @@ pub fn index(nav_items: List(NavItem)) -> Element(Nil) {
 pub fn post(nav_items: List(NavItem)) -> fn(Post) -> Element(Nil) {
   fn(post: Post) -> Element(Nil) {
     let title = post.meta.title
+    io.debug("trying " <> title)
     let contents = [
       components.page_title(title),
-      html.div([class("text-lg")], post.body),
+      components.tag_menu(post.meta.tags),
+      html.p([class("mt-4 italic")], [
+        html.text("Estimated read time: " <> minutes_to_read(post.word_count)),
+      ]),
+      html.article([class("text-lg mt-8")], post.body),
     ]
-    make_page(nav_items:, title:, contents:)
+    let page = make_page(nav_items:, title:, contents:)
+    io.debug("ok " <> title)
+    page
   }
 }
 

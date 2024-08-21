@@ -9,7 +9,7 @@ import markdown
 import simplifile
 
 pub type Post {
-  Post(meta: Metadata, body: List(Element(Nil)))
+  Post(meta: Metadata, body: List(Element(Nil)), word_count: Int)
 }
 
 pub type Error {
@@ -24,6 +24,7 @@ pub type Metadata {
     abstract: String,
     tags: List(String),
     publication_date: dates.Date,
+    draft: Bool,
   )
 }
 
@@ -32,7 +33,7 @@ pub fn parse_metadata(
   meta_string: String,
 ) -> Result(Metadata, gloml.DecodeError) {
   let decoder =
-    dynamic.decode6(
+    dynamic.decode7(
       Metadata,
       dynamic.field("id", dynamic.string),
       dynamic.field("title", dynamic.string),
@@ -40,6 +41,7 @@ pub fn parse_metadata(
       dynamic.field("abstract", dynamic.string),
       dynamic.field("tags", dynamic.list(of: dynamic.string)),
       dynamic.field("publication_date", dates.decoder),
+      dynamic.field("draft", dynamic.bool),
     )
 
   gloml.decode(meta_string, decoder)
@@ -61,11 +63,11 @@ pub fn read(path: String) -> Result(Post, Error) {
   let assert Ok(contents) = simplifile.read(path)
 
   case markdown.parse(contents) {
-    Ok(#(meta_string, parsed_body)) -> {
+    Ok(#(meta_string, parsed_body, word_count)) -> {
       let parsed_meta = parse_metadata(meta_string)
 
       case parsed_meta {
-        Ok(meta) -> Ok(Post(meta: meta, body: parsed_body))
+        Ok(meta) -> Ok(Post(meta:, body: parsed_body, word_count:))
         _ -> Error(ParsingError)
       }
     }
