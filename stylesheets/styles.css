@@ -725,8 +725,8 @@ video {
   gap: 2rem;
 }
 
-.overflow-x-auto {
-  overflow-x: auto;
+.overflow-x-scroll {
+  overflow-x: scroll;
 }
 
 .rounded-full {
