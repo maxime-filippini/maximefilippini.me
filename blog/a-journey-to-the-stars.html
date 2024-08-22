@@ -12,7 +12,7 @@ which inherently makes Gleam a polar opposite of Python!</p><p class="my-3 align
 general, if a program compiles, then it will run, and runtime errors will be much
 rarer when compared to an equivalent program written in Python or Javascript.</p><p class="my-3 align-middle">But where Gleam shines above all for me, can be summarized in one word:</p><blockquote class="bg-surface-0 border-l-[16px] border-gleam-pink py-4 my-4 px-4 rounded-lg"><p class="my-3 align-middle"><strong>Aesthetics</strong>.</p></blockquote><p class="my-3 align-middle">First, look at their <a href="https://gleam.run" class="underline font-bold underline-offset-2 hover:text-gleam-pink hover:underline-offset-4 duration-200">website</a>:</p><p class="my-3 align-middle"><img src="/images/gleam_website_banner.png" alt class="rounded-lg"></p><p class="my-3 align-middle">If you&#39;re not convinced, let&#39;s take a look at the gorgeous code. Don&#39;t worry
 if it looks foreign, it&#39;s mostly due to the <em>functional style</em> of the language, and
-we will go over these features in the next sections and future posts.</p><pre class="my-6 bg-surface-0 p-4 rounded-md overflow-x-scroll text-sm sm:text-lg"><code data-lang="gleam" class="not-prose language-gleam">/// Source:
+we will go over these features in the next sections and future posts.</p><pre class="my-6 bg-surface-0 p-4 rounded-md overflow-x-auto text-sm sm:text-lg"><code data-lang="gleam" class="not-prose language-gleam">/// Source:
 /// https://github.com/giacomocavalieri/squirrel/blob/main/src/squirrel.gleam
 
 fn run(
@@ -41,12 +41,12 @@ fn run(
 }</code></pre><h2 class="sm:text-3xl text-xl font-bold my-8">A quick Gleam overview</h2><p class="my-3 align-middle">Because it is a functional programming language, writing Gleam is quite
 different from writing in other languages, such as Python, as it has (almost)
 <strong>none of the usual control flow mechanisms</strong> (e.g. loops and conditionals).
-What Gleam has, however, is:</p><ul class="list-disc list-outside ml-8"><li><p class="my-3 align-middle"><strong>Recursion</strong> (which is our go-to mechanism to replace iteration); and</p></li><li><p class="my-3 align-middle"><strong>Pattern matching</strong>.</p></li></ul><p class="my-3 align-middle">Consider the following simple Python program:</p><pre class="my-6 bg-surface-0 p-4 rounded-md overflow-x-scroll text-sm sm:text-lg"><code data-lang="python" class="not-prose language-python">def integers_above_n(lst: list[int], n: float) -&gt; list[int]:
+What Gleam has, however, is:</p><ul class="list-disc list-outside ml-8"><li><p class="my-3 align-middle"><strong>Recursion</strong> (which is our go-to mechanism to replace iteration); and</p></li><li><p class="my-3 align-middle"><strong>Pattern matching</strong>.</p></li></ul><p class="my-3 align-middle">Consider the following simple Python program:</p><pre class="my-6 bg-surface-0 p-4 rounded-md overflow-x-auto text-sm sm:text-lg"><code data-lang="python" class="not-prose language-python">def integers_above_n(lst: list[int], n: float) -&gt; list[int]:
     return [
         item
         for item in lst
         if item &gt; n
-    ]</code></pre><p class="my-3 align-middle">In Gleam, a naive implementation of this function would look like:</p><pre class="my-6 bg-surface-0 p-4 rounded-md overflow-x-scroll text-sm sm:text-lg"><code data-lang="gleam" class="not-prose language-gleam">import gleam/int
+    ]</code></pre><p class="my-3 align-middle">In Gleam, a naive implementation of this function would look like:</p><pre class="my-6 bg-surface-0 p-4 rounded-md overflow-x-auto text-sm sm:text-lg"><code data-lang="gleam" class="not-prose language-gleam">import gleam/int
 
 fn integers_above_n(lst: List(Int), n: Float) -&gt; List(Int) {
   case lst {
@@ -69,7 +69,7 @@ before the comparison (and note the dedicated comparison operators for floating
 numbers <code>&gt;.</code> to make everything explicit.)</p></li></ul></li></ul><p class="my-3 align-middle">This example represents well the type of control flows you can expect from Gleam
 programs. Even though I find it quite easy to read, one could argue that it is
 a little bit verbose, and that Python&#39;s list comprehension reads a little bit
-nicer.</p><p class="my-3 align-middle">Fret not, because there is a much more idiomatic way to write this function:</p><pre class="my-6 bg-surface-0 p-4 rounded-md overflow-x-scroll text-sm sm:text-lg"><code data-lang="gleam" class="not-prose language-gleam">import gleam/list
+nicer.</p><p class="my-3 align-middle">Fret not, because there is a much more idiomatic way to write this function:</p><pre class="my-6 bg-surface-0 p-4 rounded-md overflow-x-auto text-sm sm:text-lg"><code data-lang="gleam" class="not-prose language-gleam">import gleam/list
 
 fn integers_above_n(lst: List(Int), n: Float) -&gt; List(Int) {
   list.filter(lst, fn(x) { int.to_float(x) &gt;. n })
@@ -77,13 +77,13 @@ fn integers_above_n(lst: List(Int), n: Float) -&gt; List(Int) {
 a way to decide which elements should be retained (in our case, the values that
 are greater than <code>n</code>.)</p><p class="my-3 align-middle">Now let us imagine we wanted to return <strong>the square</strong> of all the values above 5.
 We could use the <code>list.map</code> function, which applies a function to each element
-of a list, which then would give:</p><pre class="my-6 bg-surface-0 p-4 rounded-md overflow-x-scroll text-sm sm:text-lg"><code data-lang="gleam" class="not-prose language-gleam">import gleam/list
+of a list, which then would give:</p><pre class="my-6 bg-surface-0 p-4 rounded-md overflow-x-auto text-sm sm:text-lg"><code data-lang="gleam" class="not-prose language-gleam">import gleam/list
 
 fn square_of_integers_above_n(lst: List(Int), n: Float) -&gt; List(Int) {
   list.map(list.filter(lst, fn(x) { int.to_float(x) &gt;. n }), fn(x) { x * x })
 }
 </code></pre><p class="my-3 align-middle">Now this is quite difficult to read, especially when compared to its Python
-equivalent, i.e.</p><pre class="my-6 bg-surface-0 p-4 rounded-md overflow-x-scroll text-sm sm:text-lg"><code data-lang="python" class="not-prose language-python">def square_of_integers_above_n(lst: list[int], n: float) -&gt; list[int]:
+equivalent, i.e.</p><pre class="my-6 bg-surface-0 p-4 rounded-md overflow-x-auto text-sm sm:text-lg"><code data-lang="python" class="not-prose language-python">def square_of_integers_above_n(lst: list[int], n: float) -&gt; list[int]:
     return [
         item * item
         for item in lst
@@ -91,7 +91,7 @@ equivalent, i.e.</p><pre class="my-6 bg-surface-0 p-4 rounded-md overflow-x-scro
     ]</code></pre><p class="my-3 align-middle">Because Gleam is built upon functions, it gives us some syntactic sugar to help
 us write chains of functions. In our case above, what we want to do is provide
 the <code>list.map</code> function with the result of the <code>list.filter</code> function. This can
-be done using the <strong>pipe</strong> operator <code>|&gt;</code>:</p><pre class="my-6 bg-surface-0 p-4 rounded-md overflow-x-scroll text-sm sm:text-lg"><code data-lang="gleam" class="not-prose language-gleam">import gleam/list
+be done using the <strong>pipe</strong> operator <code>|&gt;</code>:</p><pre class="my-6 bg-surface-0 p-4 rounded-md overflow-x-auto text-sm sm:text-lg"><code data-lang="gleam" class="not-prose language-gleam">import gleam/list
 
 fn square_of_integers_above_n(lst: List(Int), n: Float) -&gt; List(Int) {
   lst
