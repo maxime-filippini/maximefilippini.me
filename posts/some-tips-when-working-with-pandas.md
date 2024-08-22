@@ -5,7 +5,7 @@ title = "🐼 Some tips when working with pandas"
 abstract = "Most Python developers have used the Pandas library. In this post, we go over some best practices and some antipatterns to avoid."
 tags = ["Python", "Data"]
 publication_date = "2024-01-01"
-draft = false
+draft = true
 ---
 
 Most of us working in Python do so because of the powerful set of libraries that have been built for it. One such library I would like to discuss today is the ubiquitous `pandas`.

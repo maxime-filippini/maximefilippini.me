@@ -34,7 +34,7 @@ pub fn code(src: String, lang: String) -> #(Element(msg), Int) {
 pub fn h2(value: String, margin margin: Bool) -> Element(a) {
   let base = "sm:text-3xl text-xl font-bold"
   let cls = case margin {
-    True -> base <> " my-6"
+    True -> base <> " my-8"
     False -> base
   }
   let elts = html.h2([class(cls)], [html.text(value)])
@@ -99,8 +99,8 @@ pub fn list(
 ) -> #(Element(msg), Int) {
   let elt = case ordered {
     True ->
-      html.ol([attribute.class("list-decimal list-outside ml-4")], items.0)
-    False -> html.ul([attribute.class("list-disc list-outside ml-4")], items.0)
+      html.ol([attribute.class("list-decimal list-outside ml-8")], items.0)
+    False -> html.ul([attribute.class("list-disc list-outside ml-8")], items.0)
   }
   #(elt, items.1)
 }
@@ -130,7 +130,7 @@ pub fn blockquote(content: #(List(Element(msg)), Int)) -> #(Element(msg), Int) {
     html.blockquote(
       [
         class(
-          "bg-surface-0 border-l-[16px] border-gleam-pink py-4 my-4 pl-4 rounded-lg",
+          "bg-surface-0 border-l-[16px] border-gleam-pink py-4 my-4 px-4 rounded-lg",
         ),
       ],
       content.0,

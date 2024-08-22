@@ -2,24 +2,11 @@
 id = "a-journey-to-the-star"
 slug = "a-journey-to-the-stars"
 title = "💫 A Journey to the Stars"
-abstract = ""
+abstract = "In the world of programming language, the functional family of language tends to stand out because of the way unmistakably different style programs end up being written in. Although most languages espouse some form of 'functional style', e.g. with functions such as map, filter and reduce, the 'true' functional programming language commit to that style 100%. In this post, I discuss an exciting and relatively new programming language called Gleam, which have caught my eye and peaked my interest, so much that I've decided to start a few projects in it!"
 tags = ["Gleam"]
 publication_date = "2024-08-22"
 draft = false
 ---
-
-```
-- intro to gleam
-- sum types
-- pattern matching, no loops, no ifs
-- steps in writing a static site in gleam
-- coolify
-
-Intro :
-
-- Writing code should be fun. Gleam look fun.
-
-```
 
 After working with Python for years, I wanted to diversify a little bit and
 explore something else, something different, refreshing. For a while, I thought
@@ -40,9 +27,9 @@ rarer when compared to an equivalent program written in Python or Javascript.
 
 But where Gleam shines above all for me, can be summarized in one word:
 
-> **🌈 Aesthetics**.
+> **Aesthetics**.
 
-First, look at their website:
+First, look at their [website](https://gleam.run):
 
 ![](/images/gleam_website_banner.png)
 
@@ -51,6 +38,9 @@ if it looks foreign, it's mostly due to the _functional style_ of the language, 
 we will go over these features in the next sections and future posts.
 
 ```gleam
+/// Source:
+/// https://github.com/giacomocavalieri/squirrel/blob/main/src/squirrel.gleam
+
 fn run(
   directories: Dict(String, List(String)),
   connection: postgres.ConnectionOptions,
@@ -115,6 +105,10 @@ fn integers_above_n(lst: List(Int), n: Float) -> List(Int) {
   }
 }
 ```
+
+> _You may wonder why I've chosen to write the Python implementation to return a new list rather than mutate the original list. This is because variables are all immutable in Gleam, as it is usual for functional languages._
+>
+> _While it takes some time to get used to it, the lack of mutability ultimately makes the code easier to understand, as the scope in which a variable can change is very limited (i.e. within a function)._
 
 Let's break down what the function does, although it is probably quite clear:
 
@@ -202,3 +196,42 @@ fn square_of_integers_above_n(lst: List(Int), n: Float) -> List(Int) {
 The pipe operator essentially works by using the value on the left as the
 **first argument** in the function on the right. The Gleam syntax is great
 because it allows us to specify the other arguments of that function.
+
+## Uses for Gleam
+
+Gleam is a **general purpose** programming language, which means it could
+technically be used to write any kind of program.
+
+Your Gleam code can compile to two different targets:
+
+- [Erlang](https://www.erlang.org/); and
+- [Javascript](https://developer.mozilla.org/en-US/docs/Web/JavaScript),
+
+which allows you to do two different things:
+
+1. When compiling to Erlang, your code is going to run on the [BEAM virtual machine](<https://en.wikipedia.org/wiki/BEAM_(Erlang_virtual_machine)>),
+   which enables Erlang's amazing concurrency model (the Open Telecom Platform, or "OTP" for short), used by the likes of WhatsApp.
+2. You can compile your code to Javascript in order to build website front-ends, using a framework like [`lustre`](https://github.com/lustre-labs/lustre).
+
+Armed with these two different targets, you could theoretically do anything!
+
+For example, this blog is now written in Gleam (although a large part of the
+logic for converting the posts to html elements was lifted from
+[Giacomo Cavalieri's own blog](https://giacomocavalieri.me))!
+
+Another good example is Gleam's excellent [Language Tour](https://tour.gleam.run/),
+which, as far as I know, embed the Gleam compiler into the browser using WASM,
+and compile's the user's code into Javascript to run it in the browser and
+display the results in a snappy fashion (no need to send the code to a server
+for compilation).
+
+## Conclusion
+
+Finally, I think the most important aspect in trying a new programming language
+is that it should be **fun**. For me, the aesthetics of the language, coupled
+with the functional style and the great type system (which I will discuss in the
+next post), makes writing Gleam extremely fun, and that's why I will stick to it
+for the foreseeable future, although I know my day job will remain very much
+Python-based for a good while.
+
+👋
