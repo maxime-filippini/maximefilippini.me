@@ -22,7 +22,7 @@ pub fn code(src: String, lang: String) -> #(Element(msg), Int) {
     html.pre(
       [
         attribute.class(
-          "my-6 bg-surface-0 p-4 rounded-md overflow-x-scroll text-sm sm:text-lg",
+          "my-6 bg-surface-0 p-4 rounded-md overflow-x-auto text-sm sm:text-lg",
         ),
       ],
       [html.code(attributes, [html.text(src)])],
