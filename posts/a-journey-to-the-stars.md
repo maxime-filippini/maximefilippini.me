@@ -119,7 +119,7 @@ Let's break down what the function does, although it is probably quite clear:
 - The `case` statement does a pattern match on our list `lst`.
 
   - `[] -> lst` means that if the list is empty, we return the list itself (i.e. we are done iterating);
-  - If the list is not empty, the the list can be written as
+  - If the list is not empty, then the list can be written as
     `[first, ..rest]`, i.e. `first` is the name we attach to the first element
     of the list, and the rest of the list is labelled `rest`. We write it as `..rest` because `rest` is itself a list. This would be the equivalent of
     writing `*rest` in Python.
