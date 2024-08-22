@@ -15,16 +15,13 @@ fn word_count(value: String) -> Int {
 pub fn code(src: String, lang: String) -> #(Element(msg), Int) {
   let attributes = [
     attribute("data-lang", lang),
+    class("overflow-x-auto"),
     attribute.class("not-prose language-" <> lang),
   ]
 
   let elts =
     html.pre(
-      [
-        attribute.class(
-          "my-6 bg-surface-0 p-4 rounded-md overflow-x-auto text-sm sm:text-lg",
-        ),
-      ],
+      [attribute.class("my-6 bg-surface-0 p-4 rounded-md text-sm sm:text-lg")],
       [html.code(attributes, [html.text(src)])],
     )
 
