@@ -195,7 +195,7 @@ fn square_of_integers_above_n(lst: List(Int), n: Float) -> List(Int) {
 
 The pipe operator essentially works by using the value on the left as the
 **first argument** in the function on the right. The Gleam syntax is great
-because it allows us to specify the other arguments of that function.
+because it allows us to specify the other arguments of that function, as if the first argument was there, even though it is not.
 
 ## Uses for Gleam
 
