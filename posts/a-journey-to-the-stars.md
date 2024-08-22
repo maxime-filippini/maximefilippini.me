@@ -116,7 +116,7 @@ Let's break down what the function does, although it is probably quite clear:
   , and the last line of a block is what is going to be returned out of the block.
   As such, the result of the `case` statement is the return value of our function.
 
-- The `case` statement does a pattern match on our list `list`.
+- The `case` statement does a pattern match on our list `lst`.
 
   - `[] -> lst` means that if the list is empty, we return the list itself (i.e. we are done iterating);
   - If the list is not empty, the the list can be written as
