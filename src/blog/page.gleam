@@ -94,3 +94,36 @@ pub fn about(nav_items: List(NavItem)) -> Element(Nil) {
   ]
   make_page(nav_items:, title:, contents:)
 }
+
+pub fn apps(nav_items: List(NavItem)) -> Element(Nil) {
+  let title = "My apps"
+
+  let app_card = fn(id: String, title: String, description: String, url: String) {
+    html.a([attribute.href(url)], [
+      html.div(
+        [
+          attribute.id(id),
+          class(
+            "shadow-md rounded-lg flex flex-col gap-2 p-4 bg-surface-1 hover:bg-surface-0 hover:shadow-xl duration-200",
+          ),
+        ],
+        [
+          components.h2(title, class: "text-2xl text-bold"),
+          html.p([class("italic")], [element.text(description)]),
+        ],
+      ),
+    ])
+  }
+
+  let contents = [
+    components.page_title(title),
+    app_card(
+      "time-tracker",
+      "Time tracker",
+      "A small app for tracking the time spent on tasks. Work in progress.",
+      "https://tracker.maximefilippini.me",
+    ),
+  ]
+
+  make_page(nav_items:, title:, contents:)
+}

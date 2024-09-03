@@ -20,6 +20,8 @@ const stylesheet_path = "/stylesheets/styles.css"
 
 const hljs_script_url = "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"
 
+const mermaid_script_url = "https://cdn.jsdelivr.net/npm/mermaid@11.0.2/dist/mermaid.min.js"
+
 const hljs_python_script_url = "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/languages/python.min.js"
 
 const hljs_gleam_path = "/js/highlightjs.gleam.js"
@@ -35,9 +37,17 @@ pub fn page_head(title t: String) {
     title(t),
     favicon("🖥"),
     script([src(hljs_script_url)], ""),
+    script([src(mermaid_script_url)], ""),
     script([src(hljs_python_script_url)], ""),
     script([type_("text/javascript"), src(hljs_gleam_path)], ""),
     script([], "hljs.highlightAll();"),
+    script(
+      [],
+      "mermaid.initialize({
+        securityLevel: 'loose',
+        theme: 'forest',
+      });",
+    ),
     ..font()
   ])
 }

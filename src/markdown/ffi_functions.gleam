@@ -18,7 +18,19 @@ pub fn code(src: String, lang: String) -> #(Element(msg), Int) {
     attribute.class("not-prose language-" <> lang),
   ]
 
-  let elts =
+  let make_mermaid = fn() {
+    io.debug(src)
+    html.pre(
+      [
+        attribute.class(
+          "my-6 bg-white p-4 rounded-md overflow-x-scroll text-sm sm:text-lg mermaid flex items-center justify-center",
+        ),
+      ],
+      [html.text(src)],
+    )
+  }
+
+  let make_code = fn() {
     html.pre(
       [
         attribute.class(
@@ -27,6 +39,12 @@ pub fn code(src: String, lang: String) -> #(Element(msg), Int) {
       ],
       [html.code(attributes, [html.text(src)])],
     )
+  }
+
+  let elts = case lang {
+    "mermaid" -> make_mermaid()
+    _ -> make_code()
+  }
 
   #(elts, 0)
 }

@@ -12,6 +12,9 @@ module.exports = {
         "surface-1": "#313244",
         "catp-green": "#a6e3a1",
         "gleam-pink": "#ffaff3",
+        "catp-lavender": "#b4befe",
+        "catp-rosewater": "#f5e0dc",
+        "catp-teal": "#94e2d5",
       },
       fontFamily: {
         roboto: ["Roboto", "sans-serif"],

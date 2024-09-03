@@ -1,5 +1,6 @@
 import gleam/dynamic.{type DecodeError, type Dynamic}
 import gleam/int
+import gleam/order
 import gleam/result
 import gleam/string
 
@@ -20,6 +21,16 @@ pub type Month {
 
 pub type Date {
   Date(day: Int, month: Month, year: Int)
+}
+
+pub fn compare(first: Date, second: Date) -> order.Order {
+  string.compare(as_string(first), as_string(second))
+}
+
+pub fn as_string(date: Date) -> String {
+  int.to_string(date.year)
+  <> date.month |> month_to_int |> int.to_string
+  <> int.to_string(date.day)
 }
 
 pub fn month_to_string(month: Month) -> String {
