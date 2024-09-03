@@ -1,0 +1,53 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"><link rel="stylesheet" href="/stylesheets/hljs.css"><link rel="stylesheet" href="/stylesheets/styles.css"><title>🧑‍💻 Writing a static website in Gleam</title><link rel="icon" href="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text y=%22.9em%22 font-size=%2290%22&gt;🖥&lt;/text&gt;&lt;/svg&gt;"><script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script><script src="https://cdn.jsdelivr.net/npm/mermaid@11.0.2/dist/mermaid.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/languages/python.min.js"></script><script type="text/javascript" src="/js/highlightjs.gleam.js"></script><script>hljs.highlightAll();</script><script>mermaid.initialize({
+        securityLevel: 'loose',
+        theme: 'forest',
+      });</script><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&amp;display=swap"></head><body class="bg-bg text-white font-roboto"><div class="container max-w-3xl mx-auto flex flex-col"><nav class="w-full py-4 sticky top-0 bg-bg border-b-2 border-surface-0 sm:px-0 px-8"><ul class="flex gap-8 justify-center"><div><li class="text-2xl text-[#a6d189] sm:block hidden"><a href="/">Maxime Filippini</a></li><li class="text-2xl text-[#a6d189] block sm:hidden"><a href="/">M.F.</a></li></div><div class="w-4 border-r-2 mr-4"></div><li class="text-lg"><a href="/blog/index.html">Blog</a></li><li class="text-lg"><a href="/apps.html">Apps</a></li><li class="text-lg"><a href="/about.html">About</a></li></ul></nav><div class="p-4"><h1 class="sm:text-5xl text-3xl mb-6 mt-6 font-bold">🧑‍💻 Writing a static website in Gleam</h1><div class="flex h-8 align-center"><p class="w-16 flex items-center">Tags</p><div class="flex gap-2"><div class="text-bg rounded-full px-4 py-1 bg-gleam-pink">Gleam</div></div></div><p class="mt-4 italic">Estimated read time: 1 minute</p><article class="text-lg mt-8"><p class="my-3 align-middle">In my <a href="a-journey-to-the-stars.html" class="underline font-bold underline-offset-2 hover:text-gleam-pink hover:underline-offset-4 duration-200">previous post</a>, I presented the basic tenets
+of the Gleam programming language. In short, it is a friendly, functional
+language, aimed to build scalable systems, mainly by relying on the BEAM virtual
+machine.</p><p class="my-3 align-middle">Another great thing about Gleam is that it can also compile to Javascript, thus
+allowing you to build dynamic web-pages, in a type-safe way, without having to
+learn a whole new language and type system (via Typescript).</p><p class="my-3 align-middle">In this post, I will cover the process in building a static website, such as
+<a href="https://maximefilippini.me" class="underline font-bold underline-offset-2 hover:text-gleam-pink hover:underline-offset-4 duration-200">this one</a>, using a neat Gleam library called
+<strong>lustre</strong>.</p><h2 class="sm:text-3xl text-xl font-bold my-8">What are static websites?</h2><p class="my-3 align-middle">In simple terms, static websites are websites for which all content is the same
+for all users, and they can either include interactive elements on their pages
+or not.</p><p class="my-3 align-middle">For you to have a static website, you only need the following elements:</p><ul class="list-disc list-outside ml-8"><li><p class="my-3 align-middle">A set of <strong>HTML pages</strong>, which represent the mark-up of your pages;</p></li><li><p class="my-3 align-middle">A set of <strong>CSS files</strong>, which contain the styling of your pages; and</p></li><li><p class="my-3 align-middle">A set of <strong>Javascript files</strong> for your interactive elements (optional).</p></li></ul><p class="my-3 align-middle">You could be an artisan and build all these files by hand, or choose a way to
+build them using code, so that everything can be more neatly organized, and more
+easily updatable in the future. Another advantage of using code to build your
+pages is when you need some kind of <em>conversion</em> to happen.</p><p class="my-3 align-middle">For example, no one in their right mind would be writing their blog posts in raw HTML, and would
+instead favor a more practical format, like a
+<a href="https://en.wikipedia.org/wiki/WYSIWYG" class="underline font-bold underline-offset-2 hover:text-gleam-pink hover:underline-offset-4 duration-200">WYSIWYG</a> editor, which usually comes
+with Content Management Systems like <a href="https://ghost.org/" class="underline font-bold underline-offset-2 hover:text-gleam-pink hover:underline-offset-4 duration-200">Ghost</a> or
+<a href="https://wordpress.com/" class="underline font-bold underline-offset-2 hover:text-gleam-pink hover:underline-offset-4 duration-200">Wordpress</a>, or a more-suited file type, like
+<a href="https://en.wikipedia.org/wiki/Markdown" class="underline font-bold underline-offset-2 hover:text-gleam-pink hover:underline-offset-4 duration-200">Markdown</a> (what I ended up settling on
+for my own blog).</p><p class="my-3 align-middle">The overall process of writing this blog can be summarized by the following
+diagram.</p><pre class="my-6 bg-white p-4 rounded-md overflow-x-scroll text-sm sm:text-lg mermaid flex items-center justify-center">flowchart LR;
+  A[Write blog posts in Markdown]
+  B[Write other pages in Gleam]
+  C[Build all web pages using Gleam]
+  D[Publish web pages and other elements]
+
+  A --&gt; C --&gt; D
+  B --&gt; C
+</pre><blockquote class="bg-surface-0 border-l-[16px] border-gleam-pink py-4 my-4 px-4 rounded-lg"><p class="my-3 align-middle">Note: I&#39;ve used <a href="https://mermaid.js.org/" class="underline font-bold underline-offset-2 hover:text-gleam-pink hover:underline-offset-4 duration-200">Mermaid</a> to build this diagram, for which I added support in my Gleam program that converts my Markdown pages to HTML.</p></blockquote><h2 class="sm:text-3xl text-xl font-bold my-8">Converting blog posts</h2><p class="my-3 align-middle">The most popular file format for writing blog posts is Markdown, because its
+syntax is very simple, the mark-up does not get in the way of the content, and
+it is trivial to include both code and math blocks, which is great for technical
+contents.</p><p class="my-3 align-middle">Here is a short example of the Markdown syntax:</p><pre class="my-6 bg-surface-0 p-4 rounded-md overflow-x-scroll text-sm sm:text-lg"><code data-lang="markdown" class="not-prose language-markdown"># This is a heading
+
+This is some text, some in _italic_, some in **bold**.
+
+## This is a sub-heading
+
+&lt;!-- This is a comment --&gt;
+
+```gleam
+import gleam/io
+
+pub fn main() {
+  io.println(&quot;This is a code block!&quot;)
+}
+```
+
+$$
+  \text{This is a Math block}
+$$</code></pre></article></div></div></body></html>
