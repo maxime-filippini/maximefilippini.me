@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css";
+import NavProgress from "../components/NavProgress.astro";
 import { IS_LIVE } from "../lib/site";
 
 interface Props {
@@ -59,6 +60,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <slot name="head" />
   </head>
   <body class="font-mono min-h-screen bg-base-100">
+    <NavProgress />
     <slot />
   </body>
 </html>
