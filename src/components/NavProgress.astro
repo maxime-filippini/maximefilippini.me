@@ -1,0 +1,77 @@
+---
+// Thin bar at the top of the page while the browser loads the next page.
+// It only shows up if the navigation takes more than ~150ms, so fast page
+// loads don't flash. Pure progressive enhancement: no JS, no bar.
+---
+
+<div id="nav-progress" aria-hidden="true"></div>
+
+<style is:global>
+  #nav-progress {
+    position: fixed;
+    inset: 0 auto auto 0;
+    z-index: 1000;
+    height: 2px;
+    width: 0;
+    background: var(--color-base-content);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  html.navigating {
+    cursor: progress;
+  }
+
+  html.navigating #nav-progress {
+    opacity: 1;
+    animation: nav-progress 8s cubic-bezier(0.1, 0.7, 0.3, 1) 150ms both;
+  }
+
+  /* Creeps towards the end but never reaches it until the new page arrives. */
+  @keyframes nav-progress {
+    from {
+      width: 0;
+    }
+    to {
+      width: 90%;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html.navigating #nav-progress {
+      width: 100%;
+      animation: nav-progress-fade 150ms linear 150ms both;
+    }
+    @keyframes nav-progress-fade {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+  }
+</style>
+
+<script>
+  const root = document.documentElement;
+
+  document.addEventListener("click", (event) => {
+    if (event.defaultPrevented || event.button !== 0) return;
+    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+
+    const link = (event.target as Element | null)?.closest("a");
+    if (!link || link.hasAttribute("download")) return;
+    if (link.target && link.target !== "_self") return;
+
+    const url = new URL(link.href, location.href);
+    if (url.origin !== location.origin) return;
+    // Same page (e.g. a heading anchor): no navigation happens.
+    if (url.pathname === location.pathname && url.search === location.search) return;
+
+    root.classList.add("navigating");
+  });
+
+  // Clear the bar when coming back via the back/forward cache.
+  window.addEventListener("pageshow", () => root.classList.remove("navigating"));
+</script>

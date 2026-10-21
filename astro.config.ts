@@ -14,6 +14,9 @@ import { lintLines } from "./src/lib/markdown/shiki-lint-lines";
 export default defineConfig({
   site: "https://maximefilippini.me",
   integrations: [mdx(), svelte(), sitemap()],
+  // Fetch a page in the background as soon as a link is hovered (or touched),
+  // so it is usually ready by the time the click lands.
+  prefetch: { prefetchAll: true, defaultStrategy: "hover" },
   vite: {
     plugins: [tailwindcss()],
     // Mermaid is large, but it is lazy-loaded only on pages with diagrams.

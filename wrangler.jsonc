@@ -6,11 +6,13 @@
   "assets": {
     "directory": "./dist",
     "not_found_handling": "404-page",
-    "html_handling": "auto-trailing-slash"
+    "html_handling": "auto-trailing-slash",
   },
   "workers_dev": true,
-  "preview_urls": true
-  // Uncomment once the site is verified on workers.dev to move the domain
-  // off the VPS (this replaces the existing DNS record for the apex).
-  // "routes": [{ "pattern": "maximefilippini.me", "custom_domain": true }]
+  "preview_urls": true,
+  // Required by `wrangler preview`, which Workers Builds runs for every branch
+  // other than main. Empty means previews use the same settings as above.
+  "previews": {},
+
+  "routes": [{ "pattern": "maximefilippini.me", "custom_domain": true }],
 }
