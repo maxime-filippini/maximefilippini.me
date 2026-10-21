@@ -10,6 +10,9 @@
   },
   "workers_dev": true,
   "preview_urls": true,
+  // Required by `wrangler preview`, which Workers Builds runs for every branch
+  // other than main. Empty means previews use the same settings as above.
+  "previews": {},
 
   "routes": [{ "pattern": "maximefilippini.me", "custom_domain": true }],
 }
