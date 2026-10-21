@@ -1,0 +1,42 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import FancyLink from "../components/FancyLink.astro";
+import { SITE } from "../lib/site";
+---
+
+<BaseLayout title={SITE.author} description="Quantitative Risk Manager — investment-fund risk, model validation, regulatory reporting and risk technology.">
+  <div class="min-h-screen max-w-6xl mx-auto border-x border-base-300 flex flex-col justify-center">
+    <header class="border-y border-base-300">
+      <div class="max-w-4xl mx-auto px-6 py-10 sm:px-8 sm:py-14">
+        <p class="text-2xl sm:text-3xl text-base-content font-semibold mb-4">{SITE.author}</p>
+        <h1 class="text-3xl sm:text-5xl font-bold leading-tight">Quantitative Risk Manager</h1>
+      </div>
+    </header>
+    <section class="border-b border-base-300">
+      <div class="max-w-4xl mx-auto px-6 py-7 sm:px-8 sm:py-8 flex flex-col gap-3">
+        <h2 class="text-lg sm:text-xl font-semibold leading-relaxed">
+          Investment-fund risk · Model validation · Regulatory reporting
+        </h2>
+        <p class="text-sm sm:text-base text-base-content/70">Risk technology and quantitative development</p>
+      </div>
+    </section>
+    <section class="border-b border-base-300">
+      <div class="max-w-4xl mx-auto px-6 py-8 sm:px-8 sm:py-10 text-sm sm:text-lg text-base-content/70 flex flex-col gap-4">
+        <p>
+          Ten years across investment-fund risk, model validation and regulatory reporting—combining quantitative
+          depth, client leadership and hands-on technology.
+        </p>
+        <p>
+          I help financial institutions turn quantitative risk methodologies into dependable calculations, reporting
+          services and decision-making systems.
+        </p>
+      </div>
+    </section>
+    <div class="grid grid-cols-2 items-stretch w-full border-b border-base-300">
+      <FancyLink href={SITE.linkedin} class="border-r border-b border-base-300">LinkedIn</FancyLink>
+      <FancyLink href="/cv/" class="border-b border-base-300">CV</FancyLink>
+      <FancyLink href="/posts/" class="border-r border-base-300">Blog</FancyLink>
+      <FancyLink href="/contact/">Contact me</FancyLink>
+    </div>
+  </div>
+</BaseLayout>

@@ -1,0 +1,19 @@
+---
+interface Props {
+  href: string;
+  class?: string;
+}
+const { href, class: className = "" } = Astro.props;
+---
+
+<a
+  href={href}
+  class:list={[
+    "text-lg sm:text-xl px-4 py-5 sm:py-6 w-full group cursor-pointer flex items-center justify-center",
+    className,
+  ]}
+>
+  <span class="group-hover:underline group-hover:font-bold underline-offset-8 duration-100 text-center">
+    <slot />
+  </span>
+</a>

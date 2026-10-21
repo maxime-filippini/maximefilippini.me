@@ -1,0 +1,36 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import ThemeToggle from "../components/ThemeToggle.astro";
+import { SITE } from "../lib/site";
+
+interface Props {
+  title: string;
+  description?: string;
+  type?: "website" | "article";
+}
+
+const links = [
+  { name: "Home", href: "/" },
+  { name: "CV", href: "/cv/" },
+  { name: "Blog", href: "/posts/" },
+  { name: "Contact", href: "/contact/" },
+];
+---
+
+<BaseLayout {...Astro.props}>
+  <slot name="head" slot="head" />
+  <div class="max-w-6xl mx-auto min-h-screen border-x border-base-300">
+    <nav
+      class="h-16 flex items-center sm:justify-between justify-center px-4 sm:px-8 border-b border-base-300 bg-base-200 sm:sticky sm:top-0 sm:z-[999]"
+    >
+      <a class="text-lg sm:block hidden link link-hover" href="/">{SITE.author}</a>
+      <div class="flex gap-4 sm:gap-6 items-center text-xs sm:text-base">
+        {links.map((l) => <a class="link link-hover" href={l.href}>{l.name}</a>)}
+        <ThemeToggle />
+      </div>
+    </nav>
+    <main>
+      <slot />
+    </main>
+  </div>
+</BaseLayout>

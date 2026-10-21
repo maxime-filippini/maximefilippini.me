@@ -1,0 +1,31 @@
+---
+// Replaces markdown images (`![alt](./file.png)`) in posts: serves responsive,
+// optimised versions and links to the full-size original.
+import type { ImageMetadata } from "astro";
+import { Image } from "astro:assets";
+
+interface Props {
+  src: ImageMetadata | string;
+  alt?: string;
+  title?: string;
+}
+
+const { src, alt = "", title } = Astro.props;
+const href = typeof src === "string" ? src : src.src;
+---
+
+<a href={href} target="_blank" rel="noopener noreferrer" class="block">
+  {
+    typeof src === "string" ? (
+      <img src={src} alt={alt} title={title} loading="lazy" decoding="async" />
+    ) : (
+      <Image
+        src={src}
+        alt={alt}
+        title={title}
+        widths={[480, 768, 1200, 1600].filter((w) => w < src.width).concat(src.width)}
+        sizes="(max-width: 768px) 100vw, 768px"
+      />
+    )
+  }
+</a>

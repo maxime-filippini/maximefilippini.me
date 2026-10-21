@@ -1,0 +1,32 @@
+---
+title: "Example: an interactive Value-at-Risk explorer"
+posted_on: 2026-10-21
+draft: true
+abstract: >
+    A template post showing how to embed an interactive Svelte visualization in an MDX article.
+    It only appears in local dev and on preview deployments.
+---
+
+import VarExplorer from "./VarExplorer.svelte";
+
+This draft shows the pattern for interactive posts: write the component next to the post,
+import it at the top of the file, then drop it in the text with a `client:` directive so
+Astro ships its JavaScript.
+
+<VarExplorer client:visible />
+
+`client:visible` loads the component's code only when it scrolls into view, so the rest of the
+page stays as plain HTML.
+
+<Note>
+
+Both distributions have the same volatility, but the Student-t's fat tails push the 99%
+Expected Shortfall noticeably further out: 3.68% against 2.66% for the Normal.
+
+</Note>
+
+Inline maths works too: the parametric VaR is $\mathrm{VaR}_\alpha = -\mu + \sigma\, z_{\alpha}$, and
+
+$$
+\mathrm{ES}_\alpha = -\mathbb{E}\left[X \mid X \le -\mathrm{VaR}_\alpha\right].
+$$

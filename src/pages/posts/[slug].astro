@@ -1,0 +1,61 @@
+---
+import "katex/dist/katex.min.css";
+import { render } from "astro:content";
+import PageLayout from "../../layouts/PageLayout.astro";
+import { mdxComponents } from "../../components/mdx";
+import { formatDate, getPosts, type Post } from "../../lib/posts";
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+}
+
+interface Props {
+  post: Post;
+}
+
+const { post } = Astro.props;
+const { title, abstract, posted_on, last_update, draft } = post.data;
+const { Content } = await render(post);
+const updated = last_update.getTime() !== posted_on.getTime();
+---
+
+<PageLayout title={title} description={abstract} type="article">
+  <article>
+    <header class="border-b border-base-300">
+      <div class="max-w-3xl mx-auto px-6 py-10 sm:px-8 sm:py-14">
+        <h1 class="text-3xl sm:text-4xl font-bold leading-tight">{title}</h1>
+        <div class="flex flex-wrap items-center gap-3 mt-5 text-xs text-base-content/60">
+          <p>Published {formatDate(posted_on)}</p>
+          {
+            updated && (
+              <>
+                <span>·</span>
+                <p>Updated {formatDate(last_update)}</p>
+              </>
+            )
+          }
+          {
+            draft && (
+              <>
+                <span>·</span>
+                <p class="font-bold">Draft</p>
+              </>
+            )
+          }
+        </div>
+      </div>
+    </header>
+    <div class="border-b border-base-300">
+      <div
+        class="prose prose-stone max-w-3xl mx-auto px-6 py-8 sm:px-8 sm:py-12 prose-pre:bg-base-200 prose-pre:rounded-none prose-pre:border prose-pre:border-accent prose-img:border-accent prose-img:border prose-img:w-full prose-a:hover:font-bold prose-a:duration-100"
+      >
+        <Content components={mdxComponents} />
+      </div>
+    </div>
+  </article>
+</PageLayout>
+
+<script>
+  import "../../scripts/mermaid";
+</script>

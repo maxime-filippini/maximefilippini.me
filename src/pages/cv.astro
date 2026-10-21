@@ -1,0 +1,154 @@
+---
+import PageLayout from "../layouts/PageLayout.astro";
+import PageHeader from "../components/PageHeader.astro";
+import CvSection from "../components/cv/CvSection.astro";
+import CvEntry from "../components/cv/CvEntry.astro";
+
+const technologies: Record<string, string[]> = {
+  "Programming languages": ["Python", "JavaScript", "TypeScript", "Elixir", "Gleam", "Visual Basic for Application", "Bash"],
+  "Web development": ["HTML", "CSS", "JavaScript", "FastAPI", "SQL", "htmx", "Phoenix (and LiveView)", "Svelte", "TailwindCSS"],
+  "Development tools": ["Git", "Terminal utilities (UNIX)", "Docker"],
+  "Back-end": ["PostgreSQL", "SQLite", "Continuous Integration", "Continuous Deployment", "Self-hosting"],
+  "Techniques and paradigms": [
+    "Metaprogramming (Python)",
+    "Object-Oriented Programming (Python)",
+    "Functional Programming (Elixir, Gleam)",
+    "Snapshot testing",
+  ],
+};
+
+const languages = ["French (Native)", "English (TOEIC 990/990)", "Croatian (Basic proficiency, actively learning)"];
+---
+
+<PageLayout
+  title="Maxime Filippini — CV"
+  description="Quantitative risk leadership, model validation, regulatory reporting, and risk technology experience."
+>
+  <PageHeader
+    title="Maxime Filippini"
+    description="Quantitative Risk Leader · Investment-fund risk · Model validation · Regulatory reporting · Risk technology"
+  />
+
+  <CvSection title="Experience">
+    <CvEntry when="Oct 2023 – Present" title="Deloitte Luxembourg" subtitle="Manager → Senior Manager">
+      <p>
+        Since my return to Deloitte, I have assisted Luxembourg management companies on risk management topics,
+        through trainings (Deloitte Quantitative Masterclasses) and advisory. This work includes in-depth validation
+        of market risk and liquidity risk models, in accordance with regulatory expectations. In addition, I have led
+        and contributed to a substantial Python library designed to help business teams define their own data
+        workflows, thus streamlining client onboarding for our reporting activities.
+      </p>
+    </CvEntry>
+    <CvEntry
+      when="Sep 2021 – Sep 2023"
+      title="Banque Internationale à Luxembourg (BIL)"
+      subtitle="Senior Quantitative Analyst"
+    >
+      <p>
+        As part of the Internal Validation, and Model Risk Management teams, I was involved in the review of risk
+        models at the Bank.
+      </p>
+      <p class="my-4">Model types include:</p>
+      <ul>
+        <li>Market risk for the trading book (e.g. Value-at-Risk);</li>
+        <li>Valuation of derivatives and structured products;</li>
+        <li>Initial margin;</li>
+        <li>Economic capital models (ICAAP);</li>
+        <li>IRRBB-related models (e.g. Non-Maturity Deposits);</li>
+      </ul>
+      <p class="my-4">
+        In addition to model reviews, I participated in the building of a standard set of libraries and Python-based
+        tools for the model validation activities, e.g. statistical testing and methodology documentation.
+      </p>
+    </CvEntry>
+    <CvEntry
+      when="Apr 2016 – Aug 2021"
+      title="Deloitte Luxembourg"
+      subtitle="Analyst → Consultant → Senior Consultant → Manager"
+    >
+      <p class="mb-4">Relevant activities include:</p>
+      <ul>
+        <li>Promotion of best programming practices to business teams within a 80-person department</li>
+        <li>
+          Training of staff on quantitative methods involved in the production of regulatory reporting activities for
+          investment funds
+        </li>
+        <li>Various developments in Python (incl. a full analytics pipeline for PRIIPs analytics)</li>
+        <li>Validation of VaR models for Global Exposure calculation under CSSF Circular 11/512</li>
+        <li>
+          Development and Facilitation of technical training programs (Deloitte Quantitative Masterclasses) covering
+          various risk management topics (Value-at-Risk, Liquidity Risk, Stress testing)
+        </li>
+      </ul>
+    </CvEntry>
+  </CvSection>
+
+  <CvSection title="Education">
+    <CvEntry
+      when="2021"
+      title="Certificate in Investment Performance Measurement (CIPM®)"
+      subtitle="CFA Institute"
+    >
+      <p class="text-right w-full text-sm">Earned the certificate, membership has since lapsed</p>
+    </CvEntry>
+    <CvEntry
+      when="2019"
+      title="Financial Risk Manager (FRM®)"
+      subtitle="Global Association of Risk Professionals (GARP)"
+    >
+      <div class="flex w-full justify-end">
+        <a class="text-sm link" href="https://my.garp.org/DigitalBadgeFRM?id=0031W00001z8OFEQA2">Click to see badge</a>
+      </div>
+    </CvEntry>
+    <CvEntry when="2016" title="Master in Probability and Statistics" subtitle="Université de Lorraine">
+      <p class="mb-4">Relevant coursework include:</p>
+      <ul>
+        <li>
+          Stochastic Calculus and financial applications (Option pricing and Interest Rate models, Vasicek, HJM, HW,
+          HL, CIR, ...)
+        </li>
+        <li>
+          Financial Econometrics (Linear/Nonlinear regressions, cross section analysis, univariate/multivariate
+          timeseries analysis, vector autoregression)
+        </li>
+        <li>
+          Market Risk Management (Review of financial markets, Review of stylized facts of asset returns, Risk
+          measures, VaR/ES, European regulatory framework)
+        </li>
+        <li>
+          Quantitative Risk Modelling (Probability theory for Risk Management, liquidity risk, spectral measures, tail
+          modelling, extensions of CLT, stable distributions, stochastic volatility models)
+        </li>
+        <li>Monte-Carlo techniques for finance</li>
+        <li>Biostatistics</li>
+        <li>Statistical signal processing</li>
+        <li>Spatial statistics</li>
+        <li>GNU R, SQL, Matlab, Microsoft Excel VBA, Microsoft Access</li>
+      </ul>
+    </CvEntry>
+  </CvSection>
+
+  <CvSection title="Technologies">
+    {
+      Object.entries(technologies).map(([name, items]) => (
+        <div class="grid sm:grid-cols-[14rem_1fr] gap-3 sm:gap-8 py-5">
+          <h3 class="text-base font-semibold">{name}</h3>
+          <div class="flex flex-row flex-wrap text-sm text-base-content/70">
+            {items.map((item, i) => (
+              <p class:list={[i < items.length - 1 && "after:content-['•'] after:mx-3"]}>{item}</p>
+            ))}
+          </div>
+        </div>
+      ))
+    }
+  </CvSection>
+
+  <section class="border-b border-base-300">
+    <div class="max-w-4xl mx-auto px-6 py-8 sm:px-8 sm:py-10">
+      <h2 class="text-2xl sm:text-3xl font-semibold mb-4">Languages</h2>
+      <div class="grid sm:grid-cols-3 gap-3 text-sm text-base-content/70">
+        {languages.map((l) => <p>{l}</p>)}
+      </div>
+    </div>
+  </section>
+</PageLayout>

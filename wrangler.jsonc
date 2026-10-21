@@ -1,0 +1,16 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "maximefilippini-me",
+  "compatibility_date": "2026-10-21",
+  // Static site only: no Worker script, Cloudflare serves the built files.
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "404-page",
+    "html_handling": "auto-trailing-slash"
+  },
+  "workers_dev": true,
+  "preview_urls": true
+  // Uncomment once the site is verified on workers.dev to move the domain
+  // off the VPS (this replaces the existing DNS record for the apex).
+  // "routes": [{ "pattern": "maximefilippini.me", "custom_domain": true }]
+}

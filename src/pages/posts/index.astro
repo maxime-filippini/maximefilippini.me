@@ -1,0 +1,45 @@
+---
+import PageLayout from "../../layouts/PageLayout.astro";
+import PageHeader from "../../components/PageHeader.astro";
+import { formatDate, getPosts } from "../../lib/posts";
+import { SITE } from "../../lib/site";
+
+const posts = await getPosts();
+---
+
+<PageLayout title="Blog" description={SITE.blogDescription}>
+  <PageHeader
+    title="Blog"
+    description="On topics such as quantitative risk, risk technology, and practical software systems."
+  />
+  {
+    posts.map((post) => (
+      <article class="border-b border-base-300">
+        <div class="max-w-4xl mx-auto px-6 py-7 sm:px-8 sm:py-9">
+          <div class="flex items-center gap-3 text-xs text-base-content/60 mb-3">
+            <p>{formatDate(post.data.posted_on)}</p>
+            {post.data.draft && (
+              <>
+                <span>·</span>
+                <p>Draft</p>
+              </>
+            )}
+          </div>
+          <h2 class="text-xl sm:text-2xl font-semibold mb-3">
+            <a href={`/posts/${post.id}/`} class="link link-hover">
+              {post.data.title}
+            </a>
+          </h2>
+          <p class="text-sm sm:text-base text-base-content/70 leading-relaxed">{post.data.abstract}</p>
+        </div>
+      </article>
+    ))
+  }
+  {
+    posts.length === 0 && (
+      <div class="border-b border-base-300">
+        <p class="max-w-4xl mx-auto px-6 py-8 text-base-content/70">No posts found.</p>
+      </div>
+    )
+  }
+</PageLayout>

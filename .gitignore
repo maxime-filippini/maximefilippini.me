@@ -1,0 +1,18 @@
+.old_version
+
+# build output
+dist/
+.astro/
+.wrangler/
+
+# dependencies
+node_modules/
+
+# environment
+.env
+.env.*
+.dev.vars*
+
+# misc
+.DS_Store
+*.log
